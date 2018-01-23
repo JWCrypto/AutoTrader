@@ -1,0 +1,7 @@
+server:
+  location: localhost
+  port: 5000
+
+public:
+  htmlRoot: ./WebEngine/public/html/*
+  staticRoot: ./WebEngine/public/static/
