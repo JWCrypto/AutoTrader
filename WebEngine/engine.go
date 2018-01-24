@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"github.com/gin-contrib/static"
-	"github.com/tinyhui/CryptoTrader/AnalyseEngine"
+	"github.com/tinyhui/CryptoTrader/CrawlerEngine"
 )
 
 type WebEngine interface {
@@ -26,6 +26,7 @@ type webEngineBuilder struct {
 
 func NewWebEngineBuilder() *webEngineBuilder {
 	engine := &webEngine{}
+	engine.init()
 	return &webEngineBuilder{
 		webEngine: engine,
 	}
@@ -41,8 +42,18 @@ func (builder *webEngineBuilder) WithStaticConfig(config TemplateConfig) *webEng
 	return builder
 }
 
+func (builder *webEngineBuilder) WithAnalyseEngine(engine CrawlerEngine.CrawlerEngine) *webEngineBuilder {
+	builder.webEngine.router.GET("/current", func(c *gin.Context) {
+		current := engine.GetCurrentPrice()
+		c.JSON(http.StatusOK, gin.H{
+			"ETH": current.Open,
+		})
+	})
+
+	return builder
+}
+
 func (builder *webEngineBuilder) Build() *webEngine {
-	builder.webEngine.init()
 	builder.webEngine.setupBasicEndpoints()
 	return builder.webEngine
 }

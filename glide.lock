@@ -1,5 +1,5 @@
-hash: cee603991ff92f7f7e11f3fac1ee1d8e769319db37519babacd21f2f6f0a698a
-updated: 2018-01-23T22:01:25.172954773Z
+hash: 165bee334a532472e66fa6a3470565b892abee32027173edcacf0343d1d33ef2
+updated: 2018-01-25T22:34:18.075707533Z
 imports:
 - name: github.com/cweill/gotests
   version: a3c1a1257668d18c210c0a63299466e301f67c27
@@ -16,8 +16,19 @@ imports:
   version: c65a0412e71e8b9b3bfd22925720d23c0f054237
   subpackages:
   - proto
+- name: github.com/gorilla/websocket
+  version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
+- name: github.com/graarh/golang-socketio
+  version: 2c44953b9b5fcd4da83ec8816f002ce68a12ef2d
+  subpackages:
+  - protocol
+  - transport
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+- name: github.com/shopspring/decimal
+  version: 9ca7f51822d222ae4e246f070f9aad863599bd1a
+- name: github.com/sirupsen/logrus
+  version: d682213848ed68c0a260ca37d6dd5ace8423f5ba
 - name: github.com/stretchr/testify
   version: b91bfb9ebec76498946beb6af7c0230c7cc7ba6c
   subpackages:
@@ -26,10 +37,23 @@ imports:
   version: 9831f2c3ac1068a78f50999a30db84270f647af6
   subpackages:
   - codec
+- name: golang.org/x/crypto
+  version: 3d37316aaa6bd9929127ac9a527abf408178ea7b
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/net
+  version: 0ed95abb35c445290478a5348a7b38bb154135fd
+  subpackages:
+  - websocket
 - name: golang.org/x/sys
   version: af50095a40f9041b3b38960738837185c26e9419
   subpackages:
   - unix
+  - windows
+- name: golang.org/x/tools
+  version: 25101aadb97aa42907eee6a238d6d26a6cb3c756
+  subpackages:
+  - playground/socket
 - name: gopkg.in/go-playground/validator.v8
   version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
 - name: gopkg.in/yaml.v2

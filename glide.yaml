@@ -10,3 +10,13 @@ import:
   subpackages:
   - assert
 - package: github.com/gin-contrib/static
+- package: github.com/sirupsen/logrus
+  version: ^1.0.4
+- package: github.com/shopspring/decimal
+  version: ^1.0.0
+- package: github.com/graarh/golang-socketio
+- package: golang.org/x/net
+  subpackages:
+  - websocket
+- package: github.com/gorilla/websocket
+  version: ^1.2.0

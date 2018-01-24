@@ -5,28 +5,33 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"github.com/tinyhui/CryptoTrader/WebEngine"
+	"github.com/tinyhui/CryptoTrader/utils/log"
+	"github.com/tinyhui/CryptoTrader/CrawlerEngine"
 )
 
+var logger = log.GetLogger()
+
 type Parameters struct {
-	ServerConfig   WebEngine.ServerConfig   `yaml:"server"`
-	TemplateConfig WebEngine.TemplateConfig `yaml:"public"`
+	ServerConfig   WebEngine.ServerConfig      `yaml:"server"`
+	TemplateConfig WebEngine.TemplateConfig    `yaml:"public"`
+	CurrencyConfig CrawlerEngine.CurrenciesMap `yaml:"tradeCurrencies"`
 }
 
 func LoadParameters() Parameters {
 	parametersFile := os.Getenv("config")
 	if parametersFile == "" {
-		log.Fatal("Config file path missing")
+		logger.Fatalln("Config file path missing")
 	}
 
 	yamlFile, err := ioutil.ReadFile(parametersFile)
 	if err != nil {
-		log.Fatalf("configFile %s .Get err #%v", parametersFile, err)
+		logger.Fatalf("configFile %s .Get err #%v", parametersFile, err)
 	}
 
 	parameters := Parameters{}
 	err = yaml.Unmarshal(yamlFile, &parameters)
 	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
+		logger.Fatalf("Unmarshal: %v", err)
 	}
 
 	return parameters

@@ -5,3 +5,9 @@ server:
 public:
   htmlRoot: ./WebEngine/public/html/*
   staticRoot: ./WebEngine/public/static/
+
+tradeCurrencies:
+  from:
+    - ETH
+    - XRP
+  to: EUR
