@@ -12,7 +12,7 @@ func validSubsResp(resp SubsResp, to Currency) bool {
 }
 
 func getType(action string) int {
-	v, err := strconv.ParseInt(strings.Split(action, "~")[0], 10, 1)
+	v, err := strconv.ParseInt(strings.Split(action, "~")[0], 10, 8)
 	if err != nil {
 		return -1
 	}
@@ -32,6 +32,19 @@ func extractTradeAction(flag string) TradeAction {
 	return UNKNOWN
 }
 
+func getFieldAsDecimal(details []string, index int) decimal.Decimal {
+	if len(details) <= index {
+		return decimal.NewFromFloat(-1)
+	}
+
+	value, err := decimal.NewFromString(details[index])
+	if err != nil {
+		return decimal.NewFromFloat(-1)
+	}
+
+	return value
+}
+
 //{SubscriptionId}~{ExchangeName}~{CurrencySymbol}~{CurrencySymbol}~{Flag}~{TradeId}~{TimeStamp}~{Quantity}~{Price}~{Total}
 func toTradeRecord(action string) *TradeRecord {
 	details := strings.Split(action, "~")
@@ -42,19 +55,11 @@ func toTradeRecord(action string) *TradeRecord {
 		return nil
 	}
 
-	quantity, err := decimal.NewFromString(details[7])
-	if err != nil {
-		return nil
-	}
-	price, err := decimal.NewFromString(details[8])
-	if err != nil {
-		return nil
-	}
+	quantity := getFieldAsDecimal(details, 7)
 
-	totalPrice, err := decimal.NewFromString(details[9])
-	if err != nil {
-		return nil
-	}
+	price := getFieldAsDecimal(details, 8)
+
+	totalPrice := getFieldAsDecimal(details, 9)
 
 	return &TradeRecord{
 		Market:    details[1],
@@ -69,6 +74,64 @@ func toTradeRecord(action string) *TradeRecord {
 		TotalPrice: Price{
 			Currency: Currency{Name: details[2], Symbol: SYMBOL[details[2]]},
 			Value:    totalPrice,
+		},
+	}
+}
+
+func toMarketRecord(action string) *MarketRecord {
+	details := strings.Split(action, "~")
+
+	dayOpen := getFieldAsDecimal(details, 17)
+	dayHigh := getFieldAsDecimal(details, 18)
+	dayLow := getFieldAsDecimal(details, 19)
+
+	hourOpen := getFieldAsDecimal(details, 14)
+	hourHigh := getFieldAsDecimal(details, 15)
+	hourLow := getFieldAsDecimal(details, 16)
+
+	CurrencyFrom := Currency{Name: details[2], Symbol: SYMBOL[details[2]]}
+	CurrencyTo := Currency{Name: details[3], Symbol: SYMBOL[details[3]]}
+
+	dayVolumeValueFrom := getFieldAsDecimal(details, 12)
+	dayVolumeValueTo := getFieldAsDecimal(details, 13)
+
+	hourVolumeValueFrom := getFieldAsDecimal(details, 10)
+	hourVolumeValueTo := getFieldAsDecimal(details, 10)
+
+	return &MarketRecord{
+		Day: Market{
+			Price: MarketPrice{
+				Open: dayOpen,
+				High: dayHigh,
+				Low:  dayLow,
+			},
+			Volume: map[Currency]Price{
+				CurrencyFrom: {
+					Currency: CurrencyFrom,
+					Value:    dayVolumeValueFrom,
+				},
+				CurrencyTo: {
+					Currency: CurrencyTo,
+					Value:    dayVolumeValueTo,
+				},
+			},
+		},
+		Hour: Market{
+			Price: MarketPrice{
+				Open: hourOpen,
+				High: hourHigh,
+				Low:  hourLow,
+			},
+			Volume: map[Currency]Price{
+				CurrencyFrom: {
+					Currency: CurrencyFrom,
+					Value:    hourVolumeValueFrom,
+				},
+				CurrencyTo: {
+					Currency: CurrencyTo,
+					Value:    hourVolumeValueTo,
+				},
+			},
 		},
 	}
 }

@@ -19,16 +19,22 @@ type Currency struct {
 	Name   string
 }
 
-type HistoryPrice struct {
-	Open  decimal.Decimal
-	Close decimal.Decimal
-	HIGH  decimal.Decimal
-	LOW   decimal.Decimal
-}
-
 type Price struct {
 	Currency Currency
 	Value    decimal.Decimal
+}
+
+type MarketPrice struct {
+	Open decimal.Decimal
+	High decimal.Decimal
+	Low  decimal.Decimal
+}
+
+type MarketVolume map[Currency]Price
+
+type Market struct {
+	Price  MarketPrice
+	Volume MarketVolume
 }
 
 type CryptoCurrencies map[Currency]Price
@@ -42,6 +48,7 @@ type SubsRespContent struct {
 }
 
 type SubsTradesResp []string
+type SubsMarketResp []string
 type SubsCurrentResp []string
 
 type CurrencyNotFoundError struct {
@@ -64,6 +71,11 @@ type TradeRecord struct {
 	Price      Price
 	Quantity   decimal.Decimal
 	TotalPrice Price
+}
+
+type MarketRecord struct {
+	Day  Market
+	Hour Market
 }
 
 type SubListRetrieveError struct {

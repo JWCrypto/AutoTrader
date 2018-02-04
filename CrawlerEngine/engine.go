@@ -11,7 +11,7 @@ var logger = log.GetLogger()
 type CrawlerEngine interface {
 	GetCurrentPrice(currency string) (*Price, error)
 	IsHealth() bool
-	Run() chan *TradeRecord
+	Run() (chan *TradeRecord, chan *MarketRecord)
 }
 
 type crawlerEngine struct {
@@ -19,6 +19,7 @@ type crawlerEngine struct {
 	cryptoCurrencies *CryptoCurrencies
 	latestUpdate     time.Time
 	tradeCrawler     TradeCrawler
+	marketCrawler    MarketCrawler
 }
 
 func NewCrawlerEngine(config CurrenciesMap) *crawlerEngine {
@@ -41,6 +42,7 @@ func NewCrawlerEngine(config CurrenciesMap) *crawlerEngine {
 		cryptoCurrencies: &cryptoCurrencies,
 		latestUpdate:     time.Now().In(location),
 		tradeCrawler:     NewTradeCrawler(config),
+		marketCrawler:    NewMarketCrawler(config),
 	}
 	return engine
 }
@@ -50,7 +52,7 @@ func (engine *crawlerEngine) hearBeat(duration time.Duration) {
 	for {
 		time.Sleep(duration)
 
-		if engine.tradeCrawler.IsConnected() {
+		if engine.tradeCrawler.IsConnected() && engine.marketCrawler.IsConnected() {
 			logger.Debug("Crawler Engine Heart beat")
 			engine.health = true
 		} else {
@@ -75,8 +77,9 @@ func (engine *crawlerEngine) IsHealth() bool {
 	return engine.health
 }
 
-func (engine *crawlerEngine) Run() chan *TradeRecord {
-	records := engine.tradeCrawler.Run()
+func (engine *crawlerEngine) Run() (chan *TradeRecord, chan *MarketRecord) {
+	tradeRecord := engine.tradeCrawler.Run()
+	marketRecord := engine.marketCrawler.Run()
 	go engine.hearBeat(30 * time.Second)
-	return records
+	return tradeRecord, marketRecord
 }
