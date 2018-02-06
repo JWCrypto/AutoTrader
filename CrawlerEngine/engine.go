@@ -2,7 +2,7 @@ package CrawlerEngine
 
 import (
 	"time"
-	"github.com/tinyhui/CryptoTrader/utils/log"
+	"github.com/JWCrypto/AutoTrader/utils/log"
 	"github.com/shopspring/decimal"
 )
 

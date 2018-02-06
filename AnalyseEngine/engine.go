@@ -1,8 +1,8 @@
 package AnalyseEngine
 
 import (
-	"github.com/tinyhui/CryptoTrader/CrawlerEngine"
-	"github.com/tinyhui/CryptoTrader/utils/log"
+	"github.com/JWCrypto/AutoTrader/CrawlerEngine"
+	"github.com/JWCrypto/AutoTrader/utils/log"
 	"fmt"
 )
 

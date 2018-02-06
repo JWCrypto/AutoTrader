@@ -4,9 +4,9 @@ import (
 	"os"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"github.com/tinyhui/CryptoTrader/WebEngine"
-	"github.com/tinyhui/CryptoTrader/utils/log"
-	"github.com/tinyhui/CryptoTrader/CrawlerEngine"
+	"github.com/JWCrypto/AutoTrader/WebEngine"
+	"github.com/JWCrypto/AutoTrader/utils/log"
+	"github.com/JWCrypto/AutoTrader/CrawlerEngine"
 )
 
 var logger = log.GetLogger()

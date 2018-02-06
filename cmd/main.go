@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/tinyhui/CryptoTrader/WebEngine"
-	"github.com/tinyhui/CryptoTrader/utils"
-	"github.com/tinyhui/CryptoTrader/CrawlerEngine"
-	"github.com/tinyhui/CryptoTrader/AnalyseEngine"
+	"github.com/JWCrypto/AutoTrader/WebEngine"
+	"github.com/JWCrypto/AutoTrader/utils"
+	"github.com/JWCrypto/AutoTrader/CrawlerEngine"
+	"github.com/JWCrypto/AutoTrader/AnalyseEngine"
 )
 
 func main() {

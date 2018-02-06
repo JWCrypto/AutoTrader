@@ -1,4 +1,4 @@
-package: github.com/tinyhui/CryptoTrader
+package: github.com/JWCrypto/AutoTrader
 import:
 - package: github.com/gin-gonic/gin
   version: ^1.2.0
